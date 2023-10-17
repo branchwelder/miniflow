@@ -1,0 +1,207 @@
+@font-face {
+  font-family: "National Park";
+  src: url("/assets/fonts/NationalPark/woff2/NP-VariableVF.woff2")
+      format("woff2 supports variations"),
+    url("/assets/fonts/NationalPark/woff2/NP-VariableVF.woff2")
+      format("woff2-variations");
+}
+
+:root {
+  --base0: #0e0e0e;
+  --base1: #1a1a1a;
+  --base2: #2b2b2b;
+  --base3: #3c3c3c;
+  --base4: #4d4d4d;
+  --base5: #5e5e5e;
+  --base6: #6f6f6f;
+  --base7: #8a8a8a;
+  --base8: #9b9b9b;
+  --base9: #a1a1a1;
+  --base10: #b2b2b2;
+  --base11: #c3c3c3;
+  --base12: #d4d4d4;
+  --base13: #e5e5e5;
+
+  --text: var(--base12);
+  --text-highlight: var(--base13);
+  --text-accent: var(--base10);
+  --text-inactive: var(--base8);
+  --disabled: var(--base8);
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "National Park";
+
+  touch-action: none;
+  overflow: hidden;
+}
+
+/*********************
+SITE
+**********************/
+
+#title-bar {
+  background-color: var(--base1);
+  color: var(--text);
+
+  padding: 0.2em;
+  font-size: larger;
+  font-weight: bolder;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+#workspace {
+  flex: 1;
+  background-color: var(--base3);
+}
+
+#background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+
+  --grid-size: 40px;
+  --dot-size: 1px;
+
+  --offset-x: 0px;
+  --offset-y: 0px;
+  --scale: 1;
+
+  background-size: calc(var(--grid-size) * var(--scale, 1))
+    calc(var(--grid-size) * var(--scale, 1));
+  background-position: var(--offset-x, 0) var(--offset-y, 0);
+  background-image: radial-gradient(
+    circle,
+    var(--text),
+    var(--base3) var(--dot-size)
+  );
+}
+
+#toolbox {
+  position: absolute;
+  z-index: 10;
+  background-color: var(--base4);
+  color: var(--base11);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 3px 0 black;
+}
+
+/*********************
+PIPES
+**********************/
+
+.svg-layer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.pipe-background {
+  /* the gray pipe */
+  fill: none;
+  stroke-width: 3px;
+  stroke: var(--base12);
+}
+
+.pipe {
+  /* the actual pipe, which is thicker, hidden, and revealed on hover */
+  fill: none;
+  stroke: var(--yellow);
+  stroke-width: 5px;
+  stroke-opacity: 0;
+  cursor: pointer;
+}
+
+.pipe:hover {
+  stroke-opacity: 1;
+}
+
+/*********************
+TOOL UI
+**********************/
+
+#tool-ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.tool {
+  border-radius: 9px 9px 0 0;
+  box-shadow: 0px 0px 2px 1px black;
+  position: absolute;
+}
+
+.toolbar {
+  background-color: var(--base2);
+  color: var(--text);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  padding: 0.2em;
+  user-select: none;
+  cursor: move;
+  border-radius: 9px 9px 0 0;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.field.out {
+  justify-content: end;
+}
+
+.tooldata {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--base2);
+  color: var(--text);
+  user-select: none;
+}
+
+.port {
+  position: absolute;
+  height: 14px;
+  width: 14px;
+  background-color: #a1a1a1;
+  border: 1px solid black;
+  border-radius: 50%;
+  transition: 50ms;
+  cursor: pointer;
+}
+
+.in .port {
+  left: -8px;
+}
+
+.out .port {
+  right: -8px;
+}
+
+.port:hover {
+  height: 16px;
+  width: 16px;
+  background-color: #e472d3;
+  border: 2px solid rgb(224, 224, 224);
+}

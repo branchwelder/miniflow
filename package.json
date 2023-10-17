@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "dev": "vite",
+    "host": "vite --host",
+    "build": "vite build",
+    "preview": "vite build && vite preview",
+    "deploy": "vite build --base=/miniflow/ && gh-pages -d dist"
+  },
+  "devDependencies": {
+    "vite": "^4.1.4"
+  },
+  "dependencies": {
+    "gh-pages": "^5.0.0",
+    "lit-html": "^2.6.1"
+  }
+}
