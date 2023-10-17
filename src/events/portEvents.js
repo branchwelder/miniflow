@@ -18,9 +18,7 @@ export function beginPortDrag(e, toolID, portID, side) {
 
   function end(e) {
     let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
-
     if (elemBelow.classList.contains("port")) {
-      let connection = getPortDetails(elemBelow);
       if (side == "in") {
         addPipe(getPortDetails(elemBelow), { toolID, portID });
       } else {

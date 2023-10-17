@@ -1,6 +1,7 @@
 import { svg, nothing } from "lit-html";
 import { GLOBAL_STATE } from "../state";
 import { toWorkspaceCoords } from "../utils";
+import { deletePipe } from "../actions/toolchainManagement";
 
 function portConnectionPoint(portEl) {
   const rect = portEl.getBoundingClientRect();
@@ -59,7 +60,10 @@ export function pipes() {
       const bezierPath = pipeBezier(start, end);
 
       return svg`<path class="pipe-background " data-pipeid=${pipeID} d="${bezierPath}" />
-    <path class="pipe" data-pipeid=${pipeID} d="${bezierPath}" />`;
+    <path class="pipe" data-pipeid=${pipeID} @contextmenu=${(e) => {
+        e.preventDefault();
+        deletePipe(pipeID);
+      }} d="${bezierPath}" />`;
     }
   );
 }

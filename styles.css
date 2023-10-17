@@ -27,6 +27,9 @@
   --text-accent: var(--base10);
   --text-inactive: var(--base8);
   --disabled: var(--base8);
+
+  --yellow: #fcef3e;
+  --orange: #fcbf3e;
 }
 
 *,
@@ -113,17 +116,22 @@ PIPES
   pointer-events: none;
 }
 
+.svg-layer * {
+  pointer-events: auto;
+}
+
 .pipe-background {
   /* the gray pipe */
   fill: none;
   stroke-width: 3px;
   stroke: var(--base12);
+  pointer-events: none;
 }
 
 .pipe {
   /* the actual pipe, which is thicker, hidden, and revealed on hover */
   fill: none;
-  stroke: var(--yellow);
+  stroke: var(--orange);
   stroke-width: 5px;
   stroke-opacity: 0;
   cursor: pointer;
@@ -144,22 +152,77 @@ TOOL UI
 }
 
 .tool {
-  border-radius: 9px 9px 0 0;
-  box-shadow: 0px 0px 2px 1px black;
+  border-radius: 9px;
+  box-shadow: 0px 0px 0px 1px var(--base1);
   position: absolute;
+  background-color: var(--base2);
+  padding-bottom: 4px;
 }
 
 .toolbar {
-  background-color: var(--base2);
   color: var(--text);
   font-weight: bold;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   line-height: 1;
-  padding: 0.2em;
+  padding: 6px;
   user-select: none;
   cursor: move;
   border-radius: 9px 9px 0 0;
+}
+
+.menu {
+  text-decoration: none;
+  cursor: pointer;
+  color: #50505d;
+  display: flex;
+  align-items: center;
+}
+
+.menu:hover,
+.menu:focus,
+.menu:active,
+.menu:focus:hover,
+.menu:active:hover {
+  color: var(--pink);
+}
+
+.menu:active + .tool-menu,
+.menu:focus + .tool-menu {
+  display: flex;
+}
+
+.tool-menu {
+  display: none;
+  position: absolute;
+  user-select: none;
+  background-color: var(--base2);
+  color: var(--text-light);
+  font-size: small;
+  flex-direction: column;
+  padding: 3px;
+  border-radius: 5px;
+  box-shadow: 0 0 4px 0 black;
+  z-index: 5;
+}
+
+.menu-item {
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: 5px;
+}
+
+.menu-item > i {
+  display: inline;
+}
+
+.menu-item:hover {
+  background-color: var(--black-accent);
 }
 
 .field {
@@ -175,7 +238,6 @@ TOOL UI
 .tooldata {
   display: flex;
   flex-direction: column;
-  background-color: var(--base2);
   color: var(--text);
   user-select: none;
 }
@@ -185,7 +247,7 @@ TOOL UI
   height: 14px;
   width: 14px;
   background-color: #a1a1a1;
-  border: 1px solid black;
+  outline: 1px solid var(--base1);
   border-radius: 50%;
   transition: 50ms;
   cursor: pointer;
@@ -200,8 +262,6 @@ TOOL UI
 }
 
 .port:hover {
-  height: 16px;
-  width: 16px;
   background-color: #e472d3;
-  border: 2px solid rgb(224, 224, 224);
+  outline: 2px solid rgb(224, 224, 224);
 }

@@ -29,3 +29,15 @@ export function addPipe(start, end) {
     ),
   });
 }
+
+export function deletePipe(pipeID) {
+  dispatch({
+    toolchain: GLOBAL_STATE.toolchain.deletePipe(pipeID),
+  });
+}
+
+export function deleteTool(toolID) {
+  dispatch({
+    toolchain: GLOBAL_STATE.toolchain.deleteTool(toolID),
+  });
+}

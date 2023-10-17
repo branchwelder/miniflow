@@ -3,6 +3,7 @@ import { Directive, directive } from "lit-html/directive.js";
 import { GLOBAL_STATE } from "../state";
 import { moveTool } from "../events/toolEvents";
 import { beginPortDrag } from "../events/portEvents.js";
+import { deleteTool } from "../actions/toolchainManagement";
 
 class Shadow extends Directive {
   constructor(partInfo) {
@@ -27,6 +28,17 @@ class Shadow extends Directive {
 
 const shadow = directive(Shadow);
 
+function toolMenu(toolID) {
+  return html`<div class="menu-item edit-toolname">
+      <i class="edit-toolname fa-solid fa-pen-to-square fa-fw"></i>
+      <span class="edit-toolname">Edit Display Name</span>
+    </div>
+    <div class="menu-item" @click=${(e) => deleteTool(toolID)}>
+      <i class="fa-solid fa-trash fa-fw"></i>
+      <span class="remove">Delete</span>
+    </div>`;
+}
+
 export function tool(toolID, tool) {
   return html`<div
     class="tool"
@@ -35,6 +47,12 @@ export function tool(toolID, tool) {
       .x}px, ${GLOBAL_STATE.layout[toolID].y}px)">
     <div class="toolbar" @pointerdown=${(e) => moveTool(e, toolID)}>
       ${tool.displayName}
+      <div class="menu-icon">
+        <a class="menu" href="#"
+          ><i class="fa-solid fa-ellipsis-vertical"></i
+        ></a>
+        <div class="tool-menu">${toolMenu(toolID)}</div>
+      </div>
     </div>
     <div class="tool-content">
       ${tool.view ? shadow(tool.view(), tool) : nothing}
