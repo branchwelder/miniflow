@@ -1,10 +1,10 @@
 import { html, nothing } from "lit-html";
 import { when } from "lit-html/directives/when.js";
 import { GLOBAL_STATE } from "../state";
-import { importTool } from "../actions/toolchainManagement";
-import { tool } from "./tool";
+import { importTool } from "../toolchain/lifecycle";
 import { pan, zoom } from "../events/panZoom";
 import { danglingPipe, pipes } from "./pipe";
+import { keyed } from "lit-html/directives/keyed.js";
 
 function toolbox() {
   return Object.entries(GLOBAL_STATE.toolbox).map(
@@ -47,12 +47,7 @@ export function view() {
       <div
         id="tool-ui"
         style="transform: translate(${GLOBAL_STATE.pan.x}px, ${GLOBAL_STATE.pan
-          .y}px) scale(${GLOBAL_STATE.scale});">
-        ${Object.entries(GLOBAL_STATE.toolchain.tools).map(
-          ([toolID, toolData]) => tool(toolID, toolData)
-        )}
-      </div>
-
+          .y}px) scale(${GLOBAL_STATE.scale});"></div>
       <svg
         id="dangling-pipe"
         class="svg-layer"

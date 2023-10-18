@@ -1,17 +1,22 @@
-import { html } from "lit-html";
+import { html, render } from "lit-html";
 
-export default {
-  displayName: "Number",
-  inputs: {},
-  outputs: {
-    num: { value: 10, type: "number" },
-  },
-  view(inputs, outputs) {
+export default function inputNumber() {
+  function view({ inputs, state }) {
     return html`<input
       type="number"
-      .value=${String(this.outputs.num)}
+      .value=${String(state.num)}
       @change=${(e) => {
-        this.outputs.num.value = Number(e.target.value);
+        state.num = Number(e.target.value);
       }} />`;
-  },
-};
+  }
+
+  return {
+    displayName: "Number",
+    stateVars: {
+      num: { value: 10, type: "number", output: true },
+    },
+    render(current) {
+      render(view(current), this.dom);
+    },
+  };
+}

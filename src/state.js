@@ -1,11 +1,13 @@
-import { Toolchain } from "./toolchain";
+import { ToolchainGraph } from "./toolchain/ToolchainGraph";
 
 const SNAPSHOT_FIELDS = ["toolchain", "pan", "scale"];
 const SNAPSHOT_INTERVAL = 1000;
 const MAX_SNAPSHOTS = 30;
 
 let GLOBAL_STATE = {
-  toolchain: new Toolchain(),
+  toolchain: new ToolchainGraph(),
+  // toolbox: import.meta.glob("./tools/**/*.js", { as: "raw", eager: true }),
+
   toolbox: import.meta.glob("./tools/**/*.js", { import: "default" }),
   danglingPipe: null,
   layout: {},

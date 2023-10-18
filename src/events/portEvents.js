@@ -1,13 +1,6 @@
 import { GLOBAL_STATE, dispatch } from "../state";
-import { eventPos, toWorkspaceCoords } from "../utils";
-import { addPipe } from "../actions/toolchainManagement";
-
-function getPortDetails(port) {
-  return {
-    toolID: port.closest(".tool").dataset.toolid,
-    portID: port.dataset.portid,
-  };
-}
+import { eventPos, toWorkspaceCoords, getPortDetails } from "../utils";
+import { addPipe } from "../toolchain/lifecycle";
 
 export function beginPortDrag(e, toolID, portID, side) {
   let startPos = eventPos(e);

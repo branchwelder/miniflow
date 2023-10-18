@@ -1,7 +1,7 @@
 import { svg, nothing } from "lit-html";
 import { GLOBAL_STATE } from "../state";
 import { toWorkspaceCoords } from "../utils";
-import { deletePipe } from "../actions/toolchainManagement";
+import { deletePipe } from "../toolchain/lifecycle";
 
 function portConnectionPoint(portEl) {
   const rect = portEl.getBoundingClientRect();
@@ -19,19 +19,27 @@ function pipeBezier(start, end) {
     ${end.x},${end.y}`;
 }
 
-function danglingBezier() {
-  const { side, originPort, endCoords } = GLOBAL_STATE.danglingPipe;
-
+function danglingBezier(side, startCoords, endCoords) {
   if (side == "in") {
-    return pipeBezier(endCoords, portConnectionPoint(originPort));
+    return pipeBezier(endCoords, startCoords);
   } else {
-    return pipeBezier(portConnectionPoint(originPort), endCoords);
+    return pipeBezier(startCoords, endCoords);
   }
 }
 
 export function danglingPipe() {
-  if (GLOBAL_STATE.danglingPipe)
-    return svg`<path class="pipe-background" d=${danglingBezier()} >`;
+  if (GLOBAL_STATE.danglingPipe) {
+    const { side, originPort, endCoords } = GLOBAL_STATE.danglingPipe;
+    const startCoords = portConnectionPoint(originPort);
+
+    return svg`<path class="pipe-progress" d=${danglingBezier(
+      side,
+      startCoords,
+      endCoords
+    )} /><circle class="pipe-start" cx="${endCoords.x}" cy="${
+      endCoords.y
+    }" r="5" />`;
+  }
   return nothing;
 }
 

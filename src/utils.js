@@ -20,3 +20,10 @@ export function toWorkspaceCoords({ x, y }) {
       workspace.top / GLOBAL_STATE.scale,
   };
 }
+
+export function getPortDetails(port) {
+  return {
+    toolID: port.closest(".tool").dataset.toolid,
+    portID: port.dataset.portid,
+  };
+}

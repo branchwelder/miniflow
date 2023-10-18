@@ -30,6 +30,7 @@
 
   --yellow: #fcef3e;
   --orange: #fcbf3e;
+  --pink: #e472d3;
 }
 
 *,
@@ -120,6 +121,18 @@ PIPES
   pointer-events: auto;
 }
 
+.pipe-start {
+  fill: var(--pink);
+  stroke: none;
+  pointer-events: none;
+}
+.pipe-progress {
+  fill: none;
+  stroke-width: 3px;
+  stroke: var(--pink);
+  pointer-events: none;
+}
+
 .pipe-background {
   /* the gray pipe */
   fill: none;
@@ -166,6 +179,7 @@ TOOL UI
   align-items: center;
   justify-content: space-between;
   line-height: 1;
+  gap: 1em;
   padding: 6px;
   user-select: none;
   cursor: move;
@@ -262,6 +276,6 @@ TOOL UI
 }
 
 .port:hover {
-  background-color: #e472d3;
+  background-color: var(--pink);
   outline: 2px solid rgb(224, 224, 224);
 }
