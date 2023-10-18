@@ -6,11 +6,16 @@ export function moveTool(e, toolID) {
   let startClientPos = eventPos(e);
   const toolbar = e.target;
   toolbar.setPointerCapture(e.pointerId);
+  toolbar.classList.remove("grab");
+  toolbar.classList.add("grabbing");
 
   dispatch({ transforming: true });
 
   function end(e) {
     dispatch({ transforming: false });
+
+    toolbar.classList.add("grab");
+    toolbar.classList.remove("grabbing");
 
     toolbar.removeEventListener("pointermove", onDrag);
     toolbar.removeEventListener("pointerup", end);

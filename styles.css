@@ -59,6 +59,14 @@ body {
   overflow: hidden;
 }
 
+.grab {
+  cursor: grab;
+}
+
+.grabbing {
+  cursor: grabbing;
+}
+
 /*********************
 SITE
 **********************/
@@ -141,6 +149,20 @@ SITE
   box-shadow: 0 0 3px 0 black;
 }
 
+.drag-image {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background-color: var(--accent);
+  color: var(--base1);
+  box-shadow: 0 0 3px 0 black;
+  font-size: small;
+  font-weight: bold;
+  padding: 0.5em;
+  border-radius: 5px;
+}
+
 /*********************
 PIPES
 **********************/
@@ -217,7 +239,6 @@ TOOL UI
   gap: 1em;
   padding: 6px;
   user-select: none;
-  cursor: move;
   border-radius: 9px 9px 0 0;
 }
 

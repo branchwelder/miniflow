@@ -51,7 +51,7 @@ export function addTool(path, toolConfig, startState, id) {
   return { toolID, tool };
 }
 
-export function importAndAddTool(path) {
+export function importAndAddTool(path, pos) {
   importTool(path).then((toolModule) => {
     const { toolID, tool } = addTool(path, toolModule());
 
@@ -59,7 +59,7 @@ export function importAndAddTool(path) {
       toolchain: GLOBAL_STATE.toolchain.addTool(toolID, tool),
       layout: {
         ...GLOBAL_STATE.layout,
-        [toolID]: { x: 100, y: 500 },
+        [toolID]: pos,
       },
     });
   });

@@ -2,6 +2,7 @@ import { html } from "lit-html";
 import { moveTool } from "../events/toolEvents";
 import { beginPortDrag } from "../events/portEvents.js";
 import { deleteTool } from "../toolchain/toolLifecycle";
+import { fileName } from "../utils";
 
 function toolMenu(toolID) {
   return html`<div class="menu-item edit-toolname">
@@ -26,8 +27,10 @@ function port(toolID, portID, side) {
 }
 
 export function toolFrame(toolID, tool) {
-  return html`<div class="toolbar" @pointerdown=${(e) => moveTool(e, toolID)}>
-      ${tool.displayName}
+  return html`<div
+      class="toolbar grab"
+      @pointerdown=${(e) => moveTool(e, toolID)}>
+      ${fileName(tool.path)}
       <div class="menu-icon">
         <a class="menu" href="#">
           <i class="fa-solid fa-ellipsis-vertical"></i>

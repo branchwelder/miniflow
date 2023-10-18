@@ -1,14 +1,15 @@
 import { GLOBAL_STATE } from "../state";
-import { importAndAddTool } from "../toolchain/toolLifecycle";
-import { html, nothing } from "lit-html";
+import { html } from "lit-html";
+import { beginToolDrag } from "../events/toolboxDragAndDrop";
+import { fileName } from "../utils";
 
 export function toolbox() {
   return html`<div id="toolbox">
-    ${Object.entries(GLOBAL_STATE.toolbox).map(
-      ([path, mod]) =>
-        html`<button class="tool-import" @click=${() => importAndAddTool(path)}>
-          ${path}
-        </button>`
+    ${Object.keys(GLOBAL_STATE.toolbox).map(
+      (path) =>
+        html`<div class="grab" @pointerdown=${(e) => beginToolDrag(e, path)}>
+          ${fileName(path)}
+        </div>`
     )}
   </div>`;
 }

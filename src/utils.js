@@ -27,3 +27,7 @@ export function getPortDetails(port) {
     portID: port.dataset.portid,
   };
 }
+
+export function fileName(path) {
+  return path.split("/").at(-1).split(".")[0];
+}
