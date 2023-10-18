@@ -31,6 +31,12 @@
   --yellow: #fcef3e;
   --orange: #fcbf3e;
   --pink: #e472d3;
+
+  --accent-h: 316;
+  --accent-s: 29%;
+  --accent-l: 64%;
+
+  --accent: hsla(var(--accent-h), var(--accent-s), var(--accent-l));
 }
 
 *,
@@ -57,16 +63,45 @@ body {
 SITE
 **********************/
 
-#title-bar {
+#taskbar {
   background-color: var(--base1);
-  color: var(--text);
+  color: var(--text-inactive);
 
   padding: 0.2em;
-  font-size: larger;
   font-weight: bolder;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   z-index: 10;
+}
+
+.taskbar-buttons {
+  display: flex;
+}
+
+.taskbar-btn {
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  height: 1.4em;
+  width: 1.4em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0;
+  font-size: inherit;
+}
+
+.taskbar-btn:hover {
+  background-color: hsla(
+    var(--accent-h),
+    var(--accent-s),
+    var(--accent-l),
+    0.6
+  );
+  color: var(--text-highlight);
+  cursor: pointer;
 }
 
 #workspace {

@@ -2,31 +2,51 @@ import { render } from "lit-html";
 import { view } from "./ui/view";
 import { pipes, danglingPipe } from "./ui/pipe";
 
-import { GLOBAL_STATE } from "./state";
+import { GLOBAL_STATE, StateObserver } from "./state";
 
-function setTransform(toolID, tool) {
-  let pos = GLOBAL_STATE.layout[toolID];
-  tool.root.style.cssText = `transform: translate(${pos.x}px, ${pos.y}px)`;
+function updateLayout() {
+  Object.entries(GLOBAL_STATE.toolchain.tools).forEach(([toolID, tool]) => {
+    let pos = GLOBAL_STATE.layout[toolID];
+    tool.root.style.cssText = `transform: translate(${pos.x}px, ${pos.y}px)`;
+  });
+
+  renderPipes();
+}
+
+function updateTransform() {
+  const toMove = document.querySelectorAll(".transform-group");
+  toMove.forEach((el) => {
+    el.style.cssText = `transform: translate(${GLOBAL_STATE.pan.x}px, ${GLOBAL_STATE.pan.y}px) scale(${GLOBAL_STATE.scale})`;
+  });
+  document.getElementById(
+    "background"
+  ).style.cssText = `--offset-x: ${GLOBAL_STATE.pan.x}px;--offset-y: ${GLOBAL_STATE.pan.y}px;--scale: ${GLOBAL_STATE.scale};`;
+  renderPipes();
+}
+
+function renderPipes() {
+  render(pipes(), document.getElementById("pipes-container"));
+  render(danglingPipe(), document.getElementById("dangling-pipe-container"));
 }
 
 function renderTools() {
   Object.entries(GLOBAL_STATE.toolchain.tools).forEach(([toolID, tool]) => {
     if (tool.render) tool.render({ inputs: tool.inputs, state: tool.state });
-
-    setTransform(toolID, tool);
   });
 }
 
 function r() {
   render(view(), document.body);
-  render(pipes(), document.getElementById("pipes-container"));
-  render(danglingPipe(), document.getElementById("dangling-pipe-container"));
   renderTools();
+  renderPipes();
   window.requestAnimationFrame(r);
 }
 
 function init() {
   r();
+  StateObserver.subscribe("layout", updateLayout);
+  StateObserver.subscribe("pan", updateTransform);
+  StateObserver.subscribe("scale", updateTransform);
 }
 
 window.onload = init;

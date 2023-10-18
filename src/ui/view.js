@@ -1,30 +1,17 @@
 import { html, nothing } from "lit-html";
-import { when } from "lit-html/directives/when.js";
 import { GLOBAL_STATE } from "../state";
-import { importTool } from "../toolchain/lifecycle";
+import { taskbar } from "./taskbar";
+import { toolbox } from "./toolbox";
 import { pan, zoom } from "../events/panZoom";
-import { danglingPipe, pipes } from "./pipe";
-import { keyed } from "lit-html/directives/keyed.js";
-
-function toolbox() {
-  return Object.entries(GLOBAL_STATE.toolbox).map(
-    ([path, mod]) =>
-      html`<button class="tool-import" @click=${() => importTool(path)}>
-        ${path}
-      </button>`
-  );
-}
 
 export function view() {
   return html`
-    <div id="title-bar">toolchains</div>
+    ${taskbar()}
     <div id="workspace">
-      <div id="toolbox">${toolbox()}</div>
+      ${toolbox()}
       <canvas
         draggable="false"
         id="background"
-        style="--offset-x: ${GLOBAL_STATE.pan.x}px;--offset-y: ${GLOBAL_STATE
-          .pan.y}px;--scale: ${GLOBAL_STATE.scale};"
         @pointerdown=${(e) => pan(e)}
         @wheel=${(e) => zoom(e)}></canvas>
       <svg
@@ -36,28 +23,15 @@ export function view() {
             ? drawSelectBox(GLOBAL_STATE)
             : nothing}
         </g>
-        <g
-          id="pipes-container"
-          class="transform-group"
-          style="transform: translate(${GLOBAL_STATE.pan.x}px, ${GLOBAL_STATE
-            .pan.y}px) scale(${GLOBAL_STATE.scale})">
-          ${pipes()}
-        </g>
+        <g id="pipes-container" class="transform-group"></g>
       </svg>
-      <div
-        id="tool-ui"
-        style="transform: translate(${GLOBAL_STATE.pan.x}px, ${GLOBAL_STATE.pan
-          .y}px) scale(${GLOBAL_STATE.scale});"></div>
+      <div id="tool-ui" class="transform-group"></div>
       <svg
         id="dangling-pipe"
         class="svg-layer"
         preserveAspectRatio="xMidYMid meet"
         draggable="false">
-        <g
-          id="dangling-pipe-container"
-          class="transform-group"
-          style="transform: translate(${GLOBAL_STATE.pan.x}px, ${GLOBAL_STATE
-            .pan.y}px) scale(${GLOBAL_STATE.scale})"></g>
+        <g id="dangling-pipe-container" class="transform-group"></g>
       </svg>
     </div>
   `;

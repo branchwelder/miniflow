@@ -1,10 +1,11 @@
 import { ToolchainGraph } from "./toolchain/ToolchainGraph";
 
-const SNAPSHOT_FIELDS = ["toolchain", "pan", "scale"];
+const SNAPSHOT_FIELDS = ["toolchain", "pan", "scale", "layout"];
 const SNAPSHOT_INTERVAL = 1000;
 const MAX_SNAPSHOTS = 30;
 
 let GLOBAL_STATE = {
+  title: "toolchain",
   toolchain: new ToolchainGraph(),
   toolbox: import.meta.glob("./tools/**/*.js", { import: "default" }),
   danglingPipe: null,
@@ -65,37 +66,41 @@ function undo() {
     snapshots: GLOBAL_STATE.snapshots.slice(1),
   };
 
-  StateMonitor.syncState(GLOBAL_STATE, changes);
+  StateObserver.notify(changes);
 }
 
 async function dispatch(action) {
   const changes = Object.keys(action);
 
   return new Promise((resolve) => {
-    StateMonitor.syncState(updateState(action), changes);
+    updateState(action);
+    StateObserver.notify(changes);
     resolve(changes);
   });
 }
 
-const StateMonitor = (() => {
-  const components = [];
+const StateObserver = (() => {
+  const stateFields = Object.fromEntries(
+    Object.keys(GLOBAL_STATE).map((field) => [field, new Set()])
+  );
 
-  function syncState(state, changes) {
-    components.forEach((component) => {
-      component.syncState(state, changes);
-    });
+  function notify(changedFields) {
+    changedFields.forEach((field) => stateFields[field].forEach((cb) => cb()));
   }
 
-  function register(componentArr) {
-    componentArr.forEach((component) =>
-      components.push(component({ state: GLOBAL_STATE, dispatch }))
-    );
+  function subscribe(field, ...cbs) {
+    cbs.forEach((cb) => stateFields[field].add(cb));
+  }
+
+  function unsubscribe(field, ...cbs) {
+    cbs.forEach((cb) => stateFields[field].delete(cb));
   }
 
   return {
-    register,
-    syncState,
+    subscribe,
+    notify,
+    unsubscribe,
   };
 })();
 
-export { GLOBAL_STATE, undo, dispatch, StateMonitor };
+export { GLOBAL_STATE, undo, dispatch, StateObserver };

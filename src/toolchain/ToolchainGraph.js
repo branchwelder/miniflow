@@ -4,6 +4,24 @@ export class ToolchainGraph {
     this.pipes = pipes;
   }
 
+  toJSON() {
+    const tools = Object.fromEntries(
+      Object.entries(this.tools).map(([toolID, tool]) => [
+        toolID,
+        {
+          state: Object.fromEntries(
+            Object.entries(tool.state).map(([key, val]) => [key, val])
+          ),
+          path: tool.path,
+        },
+      ])
+    );
+    return {
+      tools,
+      pipes: this.pipes,
+    };
+  }
+
   getConnectedPipes(toolID) {
     return Object.fromEntries(
       Object.entries(this.pipes).filter(([pipeID, pipeData]) => {
