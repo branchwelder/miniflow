@@ -6,8 +6,6 @@ const MAX_SNAPSHOTS = 30;
 
 let GLOBAL_STATE = {
   toolchain: new ToolchainGraph(),
-  // toolbox: import.meta.glob("./tools/**/*.js", { as: "raw", eager: true }),
-
   toolbox: import.meta.glob("./tools/**/*.js", { import: "default" }),
   danglingPipe: null,
   layout: {},
@@ -70,9 +68,13 @@ function undo() {
   StateMonitor.syncState(GLOBAL_STATE, changes);
 }
 
-function dispatch(action) {
+async function dispatch(action) {
   const changes = Object.keys(action);
-  StateMonitor.syncState(updateState(action), changes);
+
+  return new Promise((resolve) => {
+    StateMonitor.syncState(updateState(action), changes);
+    resolve(changes);
+  });
 }
 
 const StateMonitor = (() => {

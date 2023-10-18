@@ -1,9 +1,8 @@
 import { render } from "lit-html";
 import { view } from "./ui/view";
 import { pipes, danglingPipe } from "./ui/pipe";
-import { shadow } from "./ui/shadow";
 
-import { StateMonitor, GLOBAL_STATE } from "./state";
+import { GLOBAL_STATE } from "./state";
 
 function setTransform(toolID, tool) {
   let pos = GLOBAL_STATE.layout[toolID];

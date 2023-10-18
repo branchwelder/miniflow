@@ -3,11 +3,14 @@ import { buildPipeID } from "../utils";
 import { toolFrame } from "../ui/toolFrame";
 import { render } from "lit-html";
 import { buildProxies } from "./proxies";
-
+import { updateTool } from "./updateTool";
 import baseTool from "./baseTool";
 
 function initToolDom(toolID, tool) {
   if (tool.init) tool.init({ inputs: tool.inputs, state: tool.state });
+
+  updateTool(tool);
+
   tool.root = document.createElement("div");
   tool.root.dataset.toolid = toolID;
   tool.root.classList.add("tool");
@@ -67,12 +70,16 @@ export function addPipe(start, end) {
       start,
       end
     ),
-  });
+  }).then(() => updateTool(GLOBAL_STATE.toolchain.tools[end.toolID]));
 }
 
 export function deletePipe(pipeID) {
+  const endToolID = GLOBAL_STATE.toolchain.pipes[pipeID].end.toolID;
+
   dispatch({
     toolchain: GLOBAL_STATE.toolchain.deletePipe(pipeID),
+  }).then(() => {
+    updateTool(GLOBAL_STATE.toolchain.tools[endToolID]);
   });
 }
 

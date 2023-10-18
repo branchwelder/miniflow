@@ -21,15 +21,7 @@ export class ToolchainGraph {
     const newPipes = {};
 
     Object.entries(this.pipes).forEach(([pipeID, pipe]) => {
-      if (pipeID in connectedPipes) {
-        // If pipe is connected
-        if (pipe.end.toolID != toolID) {
-          // If pipe ends at a different tool set the input to null
-          const endTool = this.tools[pipe.end.toolID];
-          const endPort = endTool.inputs[pipe.end.portID];
-          endPort.value = null;
-        }
-      } else {
+      if (!(pipeID in connectedPipes)) {
         // If pipe is not connected add it to the new pipe object
         newPipes[pipeID] = pipe;
       }
@@ -44,6 +36,18 @@ export class ToolchainGraph {
     if (start.toolID == end.toolID) {
       console.log("Can't connect a tool to itself!");
       return;
+    }
+
+    let connected = this.connectedOutput(end.toolID, end.portID);
+
+    if (connected) {
+      // if a pipe is already connected to the input, remove it
+      const { [connected.pipeID]: _, ...remainingPipes } = this.pipes;
+
+      return new ToolchainGraph(
+        { ...this.tools },
+        { ...remainingPipes, [pipeID]: { start, end } }
+      );
     }
 
     return new ToolchainGraph(
@@ -68,7 +72,7 @@ export class ToolchainGraph {
     for (const pipe of Object.entries(this.pipes)) {
       let [pipeID, pipeData] = pipe;
       if (pipeData.end.toolID == toolID && pipeData.end.portID == portID) {
-        return pipeData.start;
+        return { pipeID, pipeData };
       }
     }
     return false;
