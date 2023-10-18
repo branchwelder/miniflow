@@ -1,6 +1,6 @@
 import { ToolchainGraph } from "./toolchain/ToolchainGraph";
 
-const SNAPSHOT_FIELDS = ["toolchain", "pan", "scale", "layout"];
+const SNAPSHOT_FIELDS = ["toolchain", "layout"];
 const SNAPSHOT_INTERVAL = 1000;
 const MAX_SNAPSHOTS = 30;
 

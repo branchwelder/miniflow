@@ -8,8 +8,8 @@ export default function dataViewer() {
     inputConfig: {
       data: { type: "any" },
     },
-    render(current) {
-      render(view(current), this.dom);
+    render(dom, current) {
+      render(view(current), dom);
     },
   };
 }

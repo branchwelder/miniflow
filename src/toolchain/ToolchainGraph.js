@@ -22,6 +22,16 @@ export class ToolchainGraph {
     };
   }
 
+  rootTools() {
+    return Object.fromEntries(
+      Object.entries(this.tools).filter(([toolID, tool]) => {
+        return Object.keys(tool.inputs).every(
+          (portID) => !this.connectedOutput(toolID, portID)
+        );
+      })
+    );
+  }
+
   getConnectedPipes(toolID) {
     return Object.fromEntries(
       Object.entries(this.pipes).filter(([pipeID, pipeData]) => {

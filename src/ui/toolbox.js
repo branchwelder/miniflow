@@ -1,5 +1,5 @@
 import { GLOBAL_STATE } from "../state";
-import { importAndAddTool } from "../toolchain/lifecycle";
+import { importAndAddTool } from "../toolchain/toolLifecycle";
 import { html, nothing } from "lit-html";
 
 export function toolbox() {

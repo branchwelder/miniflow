@@ -1,7 +1,7 @@
 import { html } from "lit-html";
 import { moveTool } from "../events/toolEvents";
 import { beginPortDrag } from "../events/portEvents.js";
-import { deleteTool } from "../toolchain/lifecycle";
+import { deleteTool } from "../toolchain/toolLifecycle";
 
 function toolMenu(toolID) {
   return html`<div class="menu-item edit-toolname">

@@ -1,6 +1,7 @@
 import { render } from "lit-html";
 import { view } from "./ui/view";
 import { pipes, danglingPipe } from "./ui/pipe";
+import { renderTool } from "./toolchain/toolLifecycle";
 
 import { GLOBAL_STATE, StateObserver } from "./state";
 
@@ -31,7 +32,7 @@ function renderPipes() {
 
 function renderTools() {
   Object.entries(GLOBAL_STATE.toolchain.tools).forEach(([toolID, tool]) => {
-    if (tool.render) tool.render({ inputs: tool.inputs, state: tool.state });
+    renderTool(toolID, tool);
   });
 }
 

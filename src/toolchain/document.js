@@ -1,17 +1,8 @@
-import { GLOBAL_STATE, dispatch } from "../state";
-import { loadToolchainJSON, clearCurrentToolchain } from "./lifecycle";
+import { GLOBAL_STATE } from "../state";
+import { loadToolchainJSON, clearCurrentToolchain } from "./toolchainLifecycle";
 
 export function newToolchain() {
   clearCurrentToolchain();
-}
-
-function upload(e) {
-  let file = e.target.files[0];
-  const fileReader = new FileReader();
-  fileReader.readAsText(file);
-  fileReader.onload = () => {
-    loadToolchainJSON(JSON.parse(fileReader.result));
-  };
 }
 
 export function uploadToolchain() {
@@ -22,7 +13,14 @@ export function uploadToolchain() {
 
   document.body.appendChild(fileInput);
   fileInput.click();
-  fileInput.onchange = upload;
+  fileInput.onchange = (e) => {
+    const file = e.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.readAsText(file);
+    fileReader.onload = () => {
+      loadToolchainJSON(JSON.parse(fileReader.result));
+    };
+  };
   document.body.removeChild(fileInput);
 }
 

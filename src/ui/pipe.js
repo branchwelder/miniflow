@@ -1,7 +1,7 @@
 import { svg, nothing } from "lit-html";
 import { GLOBAL_STATE } from "../state";
 import { toWorkspaceCoords } from "../utils";
-import { deletePipe } from "../toolchain/lifecycle";
+import { deletePipe } from "../toolchain/toolLifecycle";
 
 function portConnectionPoint(portEl) {
   const rect = portEl.getBoundingClientRect();
