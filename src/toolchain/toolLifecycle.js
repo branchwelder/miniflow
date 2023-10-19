@@ -7,7 +7,8 @@ import { render } from "lit-html";
 import baseTool from "./baseTool";
 
 function initToolDom(toolID, tool) {
-  if (tool.init) tool.init({ inputs: tool.inputs, state: tool.state });
+  if (tool.init)
+    tool.init({ inputs: tool.inputs, state: tool.state }, GLOBAL_STATE.context);
 
   updateTool(tool);
 
