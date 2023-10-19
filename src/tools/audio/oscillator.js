@@ -1,44 +1,51 @@
 import { html, render } from "lit-html";
 
 export default function oscillator() {
-  let osc;
-  function view(state) {
-    return html`<div class="right">
-      <span>Current waveform: </span>
-      <select
-        name="waveform"
-        .value=${state.waveType}
-        @change=${(e) => (state.waveType = e.target.value)}>
-        <option value="sine">Sine</option>
-        <option value="square" selected>Square</option>
-        <option value="sawtooth">Sawtooth</option>
-        <option value="triangle">Triangle</option>
-      </select>
-    </div>`;
-  }
   return {
     displayName: "Oscillator",
+    inputConfig: {
+      frequency: {
+        type: "Number",
+        change({ outputs }, newValue) {
+          if (newValue) outputs.node.frequency.value = newValue;
+        },
+      },
+    },
     outputConfig: {
       node: { type: "AudioNode" },
     },
     stateConfig: {
-      frequency: { value: 100, type: "Number" },
-      waveType: { value: "sine", type: "String" },
+      waveType: {
+        value: "sine",
+        type: "String",
+        change({ outputs }, newValue) {
+          if (newValue) outputs.node.type.value = newValue;
+        },
+      },
     },
-    init({ inputs, state }, context) {
-      osc = context.audio.createOscillator();
-      osc.start();
+    setup({ outputs, global }) {
+      outputs.node = global.audioContext.createOscillator();
+      outputs.node.start();
     },
-    updated({ state }) {
-      osc.type = state.waveType;
-      osc.frequency.value = state.frequency;
-
-      return {
-        node: osc,
-      };
+    teardown({ outputs }) {
+      outputs.node.disconnect();
     },
-    render(dom, { state }) {
-      render(view(state), dom);
+    render({ state, dom }) {
+      render(
+        html`<div>
+          <span>waveform:</span>
+          <select
+            name="waveform"
+            .value=${state.waveType}
+            @change=${(e) => (state.waveType = e.target.value)}>
+            <option value="sine">Sine</option>
+            <option value="square">Square</option>
+            <option value="sawtooth">Sawtooth</option>
+            <option value="triangle">Triangle</option>
+          </select>
+        </div>`,
+        dom
+      );
     },
   };
 }

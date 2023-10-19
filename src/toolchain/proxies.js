@@ -1,5 +1,4 @@
 import { GLOBAL_STATE } from "../state";
-import { updateTool } from "./updateTool";
 
 function inputHandler(toolID) {
   return {
@@ -26,24 +25,30 @@ function stateHandler(tool, toolID) {
       return Reflect.get(...arguments).value;
     },
     set(obj, prop, value) {
+      const lastValue = Reflect.get(...arguments).value;
       Reflect.get(...arguments).value = value;
-      updateTool(tool);
+      if (tool.stateConfig[prop].change)
+        tool.stateConfig[prop].change(tool, value, lastValue);
       return true;
     },
   };
 }
 
-function outputHandler(toolID) {
+function outputHandler(tool, toolID) {
   return {
     get(target, prop, receiver) {
       return Reflect.get(...arguments).value;
     },
-    set(obj, prop, value) {
-      Reflect.get(...arguments).value = value;
-      const connected = GLOBAL_STATE.toolchain.connectedInputs(toolID, prop);
+    set(obj, portID, value) {
+      const lastValue = Reflect.get(...arguments).value;
 
-      connected.forEach(([pipeID, pipeData]) => {
-        updateTool(GLOBAL_STATE.toolchain.tools[pipeData.end.toolID]);
+      Reflect.get(...arguments).value = value;
+      const connected = GLOBAL_STATE.toolchain.connectedInputs(toolID, portID);
+
+      connected.forEach(([pipeID, { start, end }]) => {
+        const endTool = GLOBAL_STATE.toolchain.tools[end.toolID];
+        const endPort = endTool.inputConfig[end.portID];
+        if (endPort.change) endPort.change(endTool, value, lastValue);
       });
 
       return true;
@@ -54,5 +59,5 @@ function outputHandler(toolID) {
 export function buildProxies(toolID, tool) {
   tool.inputs = new Proxy(tool.inputConfig, inputHandler(toolID));
   tool.state = new Proxy(tool.stateConfig, stateHandler(tool, toolID));
-  tool.outputs = new Proxy(tool.outputConfig, outputHandler(toolID));
+  tool.outputs = new Proxy(tool.outputConfig, outputHandler(tool, toolID));
 }

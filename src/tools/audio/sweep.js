@@ -37,8 +37,8 @@ export default function sweep() {
       release: { value: 0.5, type: "Number" },
     },
 
-    init({ inputs, state }, context) {
-      ctx = context.audio;
+    init({ inputs, state }, { audioContext }) {
+      ctx = audioContext;
       const wave = new PeriodicWave(ctx, {
         real: wavetable.real,
         imag: wavetable.imag,

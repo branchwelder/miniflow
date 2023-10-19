@@ -15,8 +15,8 @@ let GLOBAL_STATE = {
   lastSnapshot: 0,
   transforming: false,
   snapshots: [],
-  context: {
-    audio: new AudioContext(),
+  global: {
+    audioContext: new AudioContext(),
   },
   selectBox: { start: null, end: null },
   heldKeys: new Set(),

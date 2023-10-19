@@ -14,8 +14,8 @@ export default function oscillator() {
   }
   return {
     displayName: "Play/Pause",
-    init({ inputs, state }, context) {
-      ctx = context.audio;
+    init({ inputs, state }, { audioContext }) {
+      ctx = audioContext;
     },
     render(dom) {
       render(view(), dom);

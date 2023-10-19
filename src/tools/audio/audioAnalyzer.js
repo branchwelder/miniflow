@@ -15,12 +15,9 @@ export default function audioAnalyzer() {
       dom.appendChild(canvas);
     },
     inputConfig: {
-      audioContext: { type: "AudioContext" },
+      node: { type: "AudioNode" },
     },
 
-    updated({ state }) {
-      return { serialPort: state.port };
-    },
     render(dom, current) {},
   };
 }

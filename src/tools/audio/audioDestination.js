@@ -1,16 +1,14 @@
 export default function audioDestination() {
-  let ctx;
   return {
     displayName: "AudioDestination",
     inputConfig: {
-      node: { type: "AudioNode" },
-    },
-    init({ inputs, state }, context) {
-      ctx = context.audio;
-    },
-    updated({ inputs }) {
-      inputs.node.connect(ctx.destination);
-      return {};
+      node: {
+        type: "AudioNode",
+        change({ global }, current, last) {
+          if (last) last.disconnect(global.audioContext.destination);
+          if (current) current.connect(global.audioContext.destination);
+        },
+      },
     },
   };
 }
