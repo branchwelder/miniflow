@@ -3,4 +3,9 @@ export default {
   inputConfig: {},
   stateConfig: {},
   outputConfig: {},
+  saveState: (state) => {
+    return Object.fromEntries(
+      Object.entries(state).map(([key, val]) => [key, val])
+    );
+  },
 };

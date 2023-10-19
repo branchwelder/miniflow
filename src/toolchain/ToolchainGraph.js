@@ -9,9 +9,7 @@ export class ToolchainGraph {
       Object.entries(this.tools).map(([toolID, tool]) => [
         toolID,
         {
-          state: Object.fromEntries(
-            Object.entries(tool.state).map(([key, val]) => [key, val])
-          ),
+          state: tool.saveState(tool.state),
           path: tool.path,
         },
       ])

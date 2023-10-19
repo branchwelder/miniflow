@@ -115,6 +115,7 @@ SITE
 #workspace {
   flex: 1;
   background-color: var(--base3);
+  position: relative;
 }
 
 #background {
@@ -139,14 +140,61 @@ SITE
   );
 }
 
+/*********************
+PIPES
+**********************/
+
 #toolbox {
   position: absolute;
   z-index: 10;
-  background-color: var(--base4);
+  bottom: 8px;
+  right: 8px;
+  font-size: smaller;
+  background-color: var(--base2);
   color: var(--base11);
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 3px 0 black;
+  border-radius: 6px;
+  user-select: none;
+}
+
+.toolbox-title {
+  font-weight: bold;
+  padding: 2px 4px;
+  background-color: var(--accent);
+  color: var(--base1);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.toolbox-title i {
+  line-height: 0;
+}
+
+.toolbox-contents {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9em;
+  max-height: 400px;
+  padding: 3px 2px;
+}
+
+.toolbox-tool {
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+.toolbox-tool:hover {
+  background-color: hsla(
+    var(--accent-h),
+    var(--accent-s),
+    var(--accent-l),
+    0.6
+  );
+  color: var(--text-highlight);
 }
 
 .drag-image {

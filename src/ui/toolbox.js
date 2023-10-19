@@ -5,11 +5,19 @@ import { fileName } from "../utils";
 
 export function toolbox() {
   return html`<div id="toolbox">
-    ${Object.keys(GLOBAL_STATE.toolbox).map(
-      (path) =>
-        html`<div class="grab" @pointerdown=${(e) => beginToolDrag(e, path)}>
-          ${fileName(path)}
-        </div>`
-    )}
+    <div class="toolbox-title">
+      <i class="fa-solid fa-toolbox"></i>
+      <span>toolbox</span>
+    </div>
+    <div class="toolbox-contents">
+      ${Object.keys(GLOBAL_STATE.toolbox).map(
+        (path) =>
+          html`<div
+            class="toolbox-tool grab"
+            @pointerdown=${(e) => beginToolDrag(e, path)}>
+            ${fileName(path)}
+          </div>`
+      )}
+    </div>
   </div>`;
 }

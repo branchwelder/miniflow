@@ -25,7 +25,7 @@ function initToolDom(toolID, tool) {
 
   document.getElementById("tool-ui").appendChild(tool.root);
 
-  if (tool.connected) tool.connected();
+  if (tool.connected) tool.connected(tool.dom);
 }
 
 export function renderTool(toolID, tool) {

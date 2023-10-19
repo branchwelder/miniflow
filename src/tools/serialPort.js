@@ -1,28 +1,49 @@
 import { html, render } from "lit-html";
 
-export default function inputNumber() {
+export default function serialPort() {
+  async function disconnect(state) {
+    console.log(state.port);
+    await state.port.close();
+    state.port = undefined;
+  }
+
+  async function connect(state) {
+    if (!"serial" in navigator) {
+      // The Web Serial API is not supported.
+      alert("Please update to the latest Chrome");
+      return;
+    }
+    const port = await navigator.serial.requestPort();
+    await port.open({ baudRate: 9600 });
+    state.port = port;
+  }
+
   function view({ state }) {
-    return html`<input
-      type="number"
-      .value=${String(state.num)}
-      @change=${(e) => {
-        state.num = Number(e.target.value);
-      }} />`;
+    if (state.port) {
+      return html`<button @click=${() => disconnect(state)}>
+        disconnect
+      </button>`;
+    } else {
+      return html`<button @click=${() => connect(state)}>connect</button>`;
+    }
   }
 
   return {
     displayName: "Number",
     stateConfig: {
-      num: { value: 10, type: "number" },
+      port: { type: "port", value: undefined },
     },
     outputConfig: {
-      num: { type: "number" },
+      serialPort: { type: "SerialPort" },
     },
     updated({ state }) {
-      return { num: state.num };
+      return { serialPort: state.port };
     },
     render(dom, current) {
       render(view(current), dom);
+    },
+    saveState(state) {
+      return { port: undefined };
     },
   };
 }
