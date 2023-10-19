@@ -25,6 +25,10 @@ function stateHandler(tool, toolID) {
       return Reflect.get(...arguments).value;
     },
     set(obj, prop, value) {
+      if (!(prop in tool.stateConfig))
+        console.error(
+          `Error!  property "${prop}" not in ${tool.displayName}'s state`
+        );
       const lastValue = Reflect.get(...arguments).value;
       Reflect.get(...arguments).value = value;
       if (tool.stateConfig[prop].change)

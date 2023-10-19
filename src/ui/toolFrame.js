@@ -30,7 +30,7 @@ export function toolFrame(toolID, tool) {
   return html`<div
       class="toolbar grab"
       @pointerdown=${(e) => moveTool(e, toolID)}>
-      ${fileName(tool.path)}
+      ${tool.displayName ?? fileName(tool.path)}
       <div class="menu-icon">
         <a class="menu" href="#">
           <i class="fa-solid fa-ellipsis-vertical"></i>

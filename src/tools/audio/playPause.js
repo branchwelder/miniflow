@@ -1,24 +1,24 @@
 import { html, render } from "lit-html";
 
-export default function oscillator() {
-  let ctx;
-  function toggleState() {
-    if (ctx.state === "suspended") {
-      ctx.resume();
-    } else if (ctx.state === "running") {
-      ctx.suspend();
-    }
-  }
-  function view() {
-    return html`<button @click=${() => toggleState()}>Play/Pause</button>`;
-  }
+export default function playPause() {
   return {
     displayName: "Play/Pause",
-    init({ inputs, state }, { audioContext }) {
-      ctx = audioContext;
+    toggleState(ctx) {
+      if (ctx.state === "suspended") {
+        ctx.resume();
+      } else if (ctx.state === "running") {
+        ctx.suspend();
+      }
     },
-    render(dom) {
-      render(view(), dom);
+    render({ dom, global }) {
+      render(
+        html`<button
+          style="width: 100%;"
+          @click=${() => this.toggleState(global.audioContext)}>
+          Play/Pause
+        </button>`,
+        dom
+      );
     },
   };
 }

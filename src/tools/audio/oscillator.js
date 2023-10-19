@@ -19,7 +19,7 @@ export default function oscillator() {
         value: "sine",
         type: "String",
         change({ outputs }, newValue) {
-          if (newValue) outputs.node.type.value = newValue;
+          if (newValue) outputs.node.type = newValue;
         },
       },
     },
