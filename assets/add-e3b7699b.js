@@ -1,0 +1,1 @@
+function u(){return{displayName:"add",func({inputs:e,outputs:n}){e.x&&e.y?n.sum=e.x+e.y:n.sum=void 0},inputConfig:{x:{type:"number",change(e){e.func(e)}},y:{type:"number",change(e){e.func(e)}}},outputConfig:{sum:{type:"number"}}}}export{u as default};

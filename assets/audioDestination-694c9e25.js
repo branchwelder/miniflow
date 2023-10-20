@@ -1,0 +1,1 @@
+function o(){return{displayName:"AudioDestination",inputConfig:{node:{type:"AudioNode",change({global:i},n,t){t&&t.disconnect(i.audioContext.destination),n&&n.connect(i.audioContext.destination)}}}}}export{o as default};
