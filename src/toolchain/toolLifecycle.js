@@ -29,6 +29,10 @@ export function renderTool(toolID, tool) {
   if (tool.render) tool.render(tool);
 }
 
+export function positionTool(tool, pos) {
+  tool.root.style.cssText = `transform: translate(${pos.x}px, ${pos.y}px)`;
+}
+
 export function addTool(path, toolConfig, startState, id) {
   const tool = {
     ...baseTool,

@@ -4,16 +4,16 @@ import { beginToolDrag } from "../events/toolboxDragAndDrop";
 import { fileName } from "../utils";
 
 export function toolbox() {
-  return html`<div id="toolbox">
-    <div class="toolbox-title">
+  return html`<div class="modal toolbox">
+    <div class="modal-title">
       <i class="fa-solid fa-toolbox"></i>
       <span>toolbox</span>
     </div>
-    <div class="toolbox-contents">
+    <div class="modal-content">
       ${Object.keys(GLOBAL_STATE.toolbox).map(
         (path) =>
           html`<div
-            class="toolbox-tool grab"
+            class="modal-entry grab"
             @pointerdown=${(e) => beginToolDrag(e, path)}>
             ${fileName(path)}
           </div>`

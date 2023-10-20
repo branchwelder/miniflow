@@ -68,6 +68,73 @@ body {
 }
 
 /*********************
+MODAL
+**********************/
+
+.modal-title {
+  font-weight: bold;
+  padding: 2px 4px;
+  background-color: var(--accent);
+  color: var(--base1);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.modal-title i {
+  line-height: 0;
+}
+
+.modal {
+  position: absolute;
+  z-index: 10;
+  background-color: var(--base2);
+  color: var(--base11);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 3px 0 black;
+  border-radius: 6px;
+  user-select: none;
+}
+
+.examples {
+  align-self: center;
+  top: 20px;
+}
+
+.toolbox {
+  bottom: 8px;
+  right: 8px;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: 400px;
+  padding: 3px 2px;
+}
+
+.examples .modal-entry {
+  cursor: pointer;
+}
+
+.modal-entry {
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+.modal-entry:hover {
+  background-color: hsla(
+    var(--accent-h),
+    var(--accent-s),
+    var(--accent-l),
+    0.6
+  );
+  color: var(--text-highlight);
+}
+
+/*********************
 SITE
 **********************/
 
@@ -138,61 +205,6 @@ SITE
     var(--text),
     var(--base3) var(--dot-size)
   );
-}
-
-/*********************
-PIPES
-**********************/
-
-#toolbox {
-  position: absolute;
-  z-index: 10;
-  bottom: 8px;
-  right: 8px;
-  background-color: var(--base2);
-  color: var(--base11);
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 3px 0 black;
-  border-radius: 6px;
-  user-select: none;
-}
-
-.toolbox-title {
-  font-weight: bold;
-  padding: 2px 4px;
-  background-color: var(--accent);
-  color: var(--base1);
-  border-radius: 6px 6px 0 0;
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-}
-
-.toolbox-title i {
-  line-height: 0;
-}
-
-.toolbox-contents {
-  display: flex;
-  flex-direction: column;
-  max-height: 400px;
-  padding: 3px 2px;
-}
-
-.toolbox-tool {
-  border-radius: 4px;
-  padding: 1px 4px;
-}
-
-.toolbox-tool:hover {
-  background-color: hsla(
-    var(--accent-h),
-    var(--accent-s),
-    var(--accent-l),
-    0.6
-  );
-  color: var(--text-highlight);
 }
 
 .drag-image {

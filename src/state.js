@@ -8,6 +8,7 @@ let GLOBAL_STATE = {
   title: "toolchain",
   toolchain: new ToolchainGraph(),
   toolbox: import.meta.glob("./tools/**/*.js", { import: "default" }),
+  examples: import.meta.glob("./examples/**/*.json", { import: "default" }),
   danglingPipe: null,
   layout: {},
   pan: { x: 0, y: 0 },
@@ -20,6 +21,7 @@ let GLOBAL_STATE = {
   },
   selectBox: { start: null, end: null },
   heldKeys: new Set(),
+  showExamples: false,
 };
 
 function shouldSnapshot(action) {

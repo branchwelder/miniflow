@@ -1,12 +1,15 @@
 import { ToolchainGraph } from "../toolchain/ToolchainGraph";
 import { GLOBAL_STATE, dispatch } from "../state";
-import { importTool, addTool, removeToolDom } from "./toolLifecycle";
-import { updateTool } from "./updateTool";
+import {
+  importTool,
+  addTool,
+  removeToolDom,
+  addPipe,
+  positionTool,
+} from "./toolLifecycle";
 
-function updateRootTools() {
-  Object.entries(GLOBAL_STATE.toolchain.rootTools()).forEach(([toolID, tool]) =>
-    updateTool(tool)
-  );
+export function importExample(path) {
+  GLOBAL_STATE.examples[path]().then((json) => loadToolchainJSON(json));
 }
 
 export async function loadToolchainJSON(workspaceJSON) {
@@ -16,17 +19,24 @@ export async function loadToolchainJSON(workspaceJSON) {
   const tools = await Promise.all(
     Object.entries(toolchain.tools).map(async ([toolID, { path, state }]) => {
       const toolModule = await importTool(path);
+
       const { tool } = addTool(path, toolModule(), state, toolID);
+      positionTool(tool, layout[toolID]);
+
       return [toolID, tool];
     })
   );
 
   dispatch({
-    toolchain: new ToolchainGraph(Object.fromEntries(tools), toolchain.pipes),
+    toolchain: new ToolchainGraph(Object.fromEntries(tools), {}),
     pan,
     layout,
     scale,
-  }).then(updateRootTools);
+  }).then(() => {
+    Object.entries(toolchain.pipes).forEach(([pipeID, { start, end }]) => {
+      addPipe(start, end);
+    });
+  });
 }
 
 export function clearCurrentToolchain() {

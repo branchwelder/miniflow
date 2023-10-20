@@ -1,14 +1,13 @@
 import { render } from "lit-html";
 import { view } from "./ui/view";
 import { pipes, danglingPipe } from "./ui/pipe";
-import { renderTool } from "./toolchain/toolLifecycle";
+import { renderTool, positionTool } from "./toolchain/toolLifecycle";
 
 import { GLOBAL_STATE, StateObserver } from "./state";
 
 function updateLayout() {
   Object.entries(GLOBAL_STATE.toolchain.tools).forEach(([toolID, tool]) => {
-    let pos = GLOBAL_STATE.layout[toolID];
-    tool.root.style.cssText = `transform: translate(${pos.x}px, ${pos.y}px)`;
+    positionTool(tool, GLOBAL_STATE.layout[toolID]);
   });
 
   renderPipes();

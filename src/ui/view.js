@@ -1,12 +1,15 @@
 import { html, nothing } from "lit-html";
-import { GLOBAL_STATE } from "../state";
+import { when } from "lit-html/directives/when.js";
+import { GLOBAL_STATE, dispatch } from "../state";
 import { taskbar } from "./taskbar";
 import { toolbox } from "./toolbox";
 import { pan, zoom } from "../events/panZoom";
+import { fileName } from "../utils";
+import { importExample } from "../toolchain/toolchainLifecycle";
 
 export function view() {
   return html`
-    ${taskbar()}
+    ${taskbar()} ${when(GLOBAL_STATE.showExamples, examplesModal)}
     <div id="workspace">
       ${toolbox()}
       <canvas
@@ -35,4 +38,23 @@ export function view() {
       </svg>
     </div>
   `;
+}
+
+function examplesModal() {
+  return html`<div class="modal examples">
+    <div class="modal-title">Examples</div>
+    <div class="modal-content">
+      ${Object.keys(GLOBAL_STATE.examples).map(
+        (path) =>
+          html`<div
+            @click=${() => {
+              dispatch({ showExamples: false });
+              importExample(path);
+            }}
+            class="modal-entry">
+            ${fileName(path)}
+          </div>`
+      )}
+    </div>
+  </div>`;
 }
