@@ -1,5 +1,5 @@
 import { ToolchainGraph } from "./toolchain/ToolchainGraph";
-
+import { dracula } from "./themes";
 const SNAPSHOT_FIELDS = ["toolchain", "layout"];
 const SNAPSHOT_INTERVAL = 1000;
 const MAX_SNAPSHOTS = 30;
@@ -11,17 +11,26 @@ let GLOBAL_STATE = {
   examples: import.meta.glob("./examples/**/*.json", { import: "default" }),
   danglingPipe: null,
   layout: {},
+  portInspection: {},
   pan: { x: 0, y: 0 },
   scale: 1,
   lastSnapshot: 0,
   transforming: false,
   snapshots: [],
   global: {
-    audioContext: new AudioContext(),
+    audioContext: new (window.AudioContext || window.webkitAudioContext)(),
   },
   selectBox: { start: null, end: null },
   heldKeys: new Set(),
   showExamples: false,
+  theme: dracula,
+  colors: {
+    Number: "--cyan",
+    Object: "--purple",
+    Boolean: "--purple",
+    String: "--yellow",
+    Undefined: "--red",
+  },
 };
 
 function shouldSnapshot(action) {

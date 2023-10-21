@@ -41,12 +41,14 @@ export async function loadToolchainJSON(workspaceJSON) {
 
 export function clearCurrentToolchain() {
   // Clean up tool dom
-  Object.values(GLOBAL_STATE.toolchain.tools).forEach((tool) =>
-    removeToolDom(tool)
-  );
+  Object.values(GLOBAL_STATE.toolchain.tools).forEach((tool) => {
+    removeToolDom(tool);
+    if (tool.teardown) tool.teardown(tool);
+  });
 
   return dispatch({
     layout: {},
+    portInspection: {},
     toolchain: new ToolchainGraph(),
     pan: { x: 0, y: 0 },
     scale: 1,

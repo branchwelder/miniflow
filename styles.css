@@ -28,10 +28,6 @@
   --text-inactive: var(--base8);
   --disabled: var(--base8);
 
-  --yellow: #fcef3e;
-  --orange: #fcbf3e;
-  --pink: #e472d3;
-
   --accent-h: 316;
   --accent-s: 29%;
   --accent-l: 64%;
@@ -221,6 +217,12 @@ SITE
   border-radius: 5px;
 }
 
+.workspace-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 /*********************
 PIPES
 **********************/
@@ -270,14 +272,66 @@ PIPES
 }
 
 /*********************
-TOOL UI
+PORT INSPECTION
 **********************/
 
-#tool-ui {
-  position: absolute;
-  top: 0;
-  left: 0;
+.port-inspection {
+  z-index: 5;
 }
+
+.port-window {
+  position: absolute;
+  user-select: none;
+  background-color: var(--base0);
+  font-family: monospace;
+  border: 1px solid var(--base0);
+}
+
+.port-window-title {
+  background-color: var(--color);
+  color: var(--base0);
+  font-weight: 600;
+  font-size: smaller;
+  padding: 3px 5px 1px 5px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.port-window-title > i {
+  cursor: pointer;
+  color: var(--base2);
+}
+
+.port-window-title > i:hover {
+  color: var(--text);
+}
+
+.port-window-content {
+  display: grid;
+  color: var(--text);
+  gap: 1px;
+
+  grid-template-columns: auto auto;
+}
+
+.port-window-content > div {
+  padding: 1px 4px;
+  background-color: var(--base2);
+}
+
+.port-type {
+  font-style: italic;
+  color: var(--color);
+}
+
+.port-inspection-line {
+  stroke-width: 2px;
+}
+
+/*********************
+TOOL UI
+**********************/
 
 .tool {
   border-radius: 9px;

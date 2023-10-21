@@ -24,11 +24,11 @@ export default function gain() {
         },
       },
     },
-    setup({ global, outputs }) {
+    setup({ global, state, outputs }) {
       outputs.node = global.audioContext.createGain();
+      outputs.node.gain.value = state.volume;
     },
     teardown({ outputs }) {
-      console.log("teardown");
       outputs.node.disconnect();
     },
     render({ state, dom }) {

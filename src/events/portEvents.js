@@ -1,4 +1,4 @@
-import { GLOBAL_STATE, dispatch } from "../state";
+import { dispatch } from "../state";
 import { eventPos, toWorkspaceCoords, getPortDetails } from "../utils";
 import { addPipe } from "../toolchain/toolLifecycle";
 

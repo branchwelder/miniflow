@@ -42,9 +42,10 @@ export function addTool(path, toolConfig, startState, id) {
   };
 
   if (startState) {
-    Object.entries(startState).forEach(
-      ([key, value]) => (tool.stateConfig[key].value = value)
-    );
+    Object.entries(startState).forEach(([key, value]) => {
+      if (!(value && Object.keys(value).length === 0))
+        tool.stateConfig[key].value = value;
+    });
   }
 
   const toolID = id ?? crypto.randomUUID();

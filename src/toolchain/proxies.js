@@ -22,13 +22,21 @@ function inputHandler(toolID) {
 function stateHandler(tool, toolID) {
   return {
     get(target, prop, receiver) {
-      return Reflect.get(...arguments).value;
-    },
-    set(obj, prop, value) {
-      if (!(prop in tool.stateConfig))
+      if (!(prop in tool.stateConfig)) {
         console.error(
           `Error!  property "${prop}" not in ${tool.displayName}'s state`
         );
+        return true;
+      }
+      return Reflect.get(...arguments).value;
+    },
+    set(obj, prop, value) {
+      if (!(prop in tool.stateConfig)) {
+        console.error(
+          `Error!  property "${prop}" not in ${tool.displayName}'s state`
+        );
+        return true;
+      }
       const lastValue = Reflect.get(...arguments).value;
       Reflect.get(...arguments).value = value;
       if (tool.stateConfig[prop].change)

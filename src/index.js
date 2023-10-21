@@ -42,8 +42,15 @@ function r() {
   window.requestAnimationFrame(r);
 }
 
+function setCustomProperties() {
+  Object.entries(GLOBAL_STATE.theme).map(([key, val]) => {
+    document.documentElement.style.setProperty(key, val);
+  });
+}
+
 function init() {
   r();
+  setCustomProperties();
   StateObserver.subscribe("layout", updateLayout);
   StateObserver.subscribe("pan", updateTransform);
   StateObserver.subscribe("scale", updateTransform);

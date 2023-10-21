@@ -5,7 +5,9 @@ export default {
   outputConfig: {},
   saveState: (state) => {
     return Object.fromEntries(
-      Object.entries(state).map(([key, val]) => [key, val])
+      Object.entries(state).map(([key, val]) => {
+        return [key, val];
+      })
     );
   },
 };

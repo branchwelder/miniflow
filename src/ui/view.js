@@ -6,6 +6,7 @@ import { toolbox } from "./toolbox";
 import { pan, zoom } from "../events/panZoom";
 import { fileName } from "../utils";
 import { importExample } from "../toolchain/toolchainLifecycle";
+import { portInspection, portInspectionLine } from "./portInspection";
 
 export function view() {
   return html`
@@ -27,8 +28,11 @@ export function view() {
             : nothing}
         </g>
         <g id="pipes-container" class="transform-group"></g>
+        <g id="port-inspection-lines" class="transform-group">
+          ${portInspectionLine()}
+        </g>
       </svg>
-      <div id="tool-ui" class="transform-group"></div>
+      <div id="tool-ui" class="workspace-layer transform-group"></div>
       <svg
         id="dangling-pipe"
         class="svg-layer"
@@ -36,6 +40,9 @@ export function view() {
         draggable="false">
         <g id="dangling-pipe-container" class="transform-group"></g>
       </svg>
+      <div class="port-inspection workspace-layer transform-group">
+        ${portInspection()}
+      </div>
     </div>
   `;
 }

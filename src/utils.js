@@ -21,6 +21,27 @@ export function toWorkspaceCoords({ x, y }) {
   };
 }
 
+export function elementCenter(el) {
+  const rect = el.getBoundingClientRect();
+
+  return toWorkspaceCoords({
+    x: rect.left + rect.width / 2,
+    y: rect.top + rect.height / 2,
+  });
+}
+
+export function getPortConfig(toolID, portID, side) {
+  if (side === "in")
+    return GLOBAL_STATE.toolchain.tools[toolID].inputConfig[portID];
+  return GLOBAL_STATE.toolchain.tools[toolID].outputConfig[portID];
+}
+
+export function getPortColor(toolID, portID, side) {
+  const portType = getPortConfig(toolID, portID, side).type;
+
+  return GLOBAL_STATE.colors[portType] ?? "--purple";
+}
+
 export function getPortDetails(port) {
   return {
     toolID: port.closest(".tool").dataset.toolid,
@@ -30,4 +51,10 @@ export function getPortDetails(port) {
 
 export function fileName(path) {
   return path.split("/").at(-1).split(".")[0];
+}
+
+export function queryPortElement({ toolID, portID }, side) {
+  return document.querySelector(
+    `[data-toolid="${toolID}"] [data-portside=${side}][data-portid="${portID}"]`
+  );
 }
