@@ -1,2 +1,0 @@
-import{D as r,x as i}from"./index-414d293e.js";function n(){return{displayName:"Serial Writer",stateConfig:{},inputConfig:{command:{type:"String",change(t,e){e&&t.writeToPort(e)}},writableStream:{type:"writableStream"}},async writeToPort(t){await this.inputs.writableStream.write(t+`
-`)},shouldWrite(t){t.key==="Enter"&&this.inputs.writableStream&&(this.writeToPort(t.target.value),t.target.value="")},render({dom:t}){r(i`<input type="text" @keydown=${e=>this.shouldWrite(e)} />`,t)}}}export{n as default};

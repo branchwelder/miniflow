@@ -1,0 +1,1 @@
+function o(){return{displayName:"Media Stream Source",outputConfig:{node:{type:"AudioNode"}},inputConfig:{mediaStream:{type:"MediaStream",change({outputs:e,global:t},a){a&&(e.node=t.audioContext.createMediaStreamSource(a))}}},teardown({outputs:e}){e.node.disconnect()}}}export{o as default};

@@ -1,4 +1,4 @@
-import{D as c,x as p}from"./index-414d293e.js";function s(){let t,r;function u(a){return p`<label for="attack">Attack</label>
+import{D as c,x as p}from"./index-6e2f550d.js";function s(){let t,r;function u(a){return p`<label for="attack">Attack</label>
       <input
         name="attack"
         @change=${e=>a.attack=Number(e.target.value)}

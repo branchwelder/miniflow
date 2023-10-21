@@ -1,4 +1,4 @@
-import{D as i,x as t}from"./index-414d293e.js";function s(){const o=[];return{async readUntilClosed(a){const e=a;try{for(;;){const{value:r,done:l}=await e.read();if(l){e.releaseLock();break}o.unshift(r)}}catch(r){console.log(r)}finally{e.releaseLock()}},displayName:"Number",inputConfig:{readableStream:{type:"readableStream",change(a,e,r){e&&a.readUntilClosed(e)}}},render({dom:a}){i(t` <style>
+import{D as i,x as t}from"./index-6e2f550d.js";function s(){const o=[];return{async readUntilClosed(a){const e=a;try{for(;;){const{value:r,done:l}=await e.read();if(l){e.releaseLock();break}o.unshift(r)}}catch(r){console.log(r)}finally{e.releaseLock()}},displayName:"Number",inputConfig:{readableStream:{type:"readableStream",change(a,e,r){e&&a.readUntilClosed(e)}}},render({dom:a}){i(t` <style>
             .container {
               display: flex;
               flex-direction: column-reverse;
