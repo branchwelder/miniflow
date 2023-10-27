@@ -5,6 +5,7 @@ export default function recorder() {
     displayName: "Record",
     outputConfig: {
       objectURL: { type: "objectURL" },
+      audioBuffer: { type: "AudioBuffer" },
     },
     stateConfig: {
       recorder: {
@@ -15,7 +16,7 @@ export default function recorder() {
     inputConfig: {
       mediaStream: {
         type: "MediaStream",
-        change({ outputs, state }, current, last) {
+        change({ outputs, state, global }, current, last) {
           if (!current) return;
 
           state.recorder = new MediaRecorder(current);
@@ -30,6 +31,21 @@ export default function recorder() {
             const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
             chunks = [];
             outputs.objectURL = window.URL.createObjectURL(blob);
+
+            const fileReader = new FileReader();
+
+            fileReader.onloadend = () => {
+              const arrayBuffer = fileReader.result;
+
+              global.audioContext.decodeAudioData(
+                arrayBuffer,
+                (audioBuffer) => {
+                  outputs.audioBuffer = audioBuffer;
+                }
+              );
+            };
+
+            fileReader.readAsArrayBuffer(blob);
           };
         },
       },
