@@ -22,7 +22,7 @@ export default function serialReader() {
         reader.releaseLock();
       }
     },
-    displayName: "Number",
+    displayName: "Serial Reader",
     inputConfig: {
       readableStream: {
         type: "readableStream",

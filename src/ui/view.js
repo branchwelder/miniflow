@@ -49,7 +49,13 @@ export function view() {
 
 function examplesModal() {
   return html`<div class="modal examples">
-    <div class="modal-title">Examples</div>
+    <div class="modal-title">
+      <span>Examples</span>
+      <i
+        @click=${() => dispatch({ showExamples: false })}
+        class="fa-solid fa-rectangle-xmark">
+      </i>
+    </div>
     <div class="modal-content">
       ${Object.keys(GLOBAL_STATE.examples).map(
         (path) =>

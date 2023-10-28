@@ -25,7 +25,6 @@ class LineBreakTransformer {
 
 export default function serialPort() {
   async function disconnect(state) {
-    console.log(state.port);
     await state.port.close();
     state.port = undefined;
   }
@@ -54,7 +53,7 @@ export default function serialPort() {
   }
 
   return {
-    displayName: "Number",
+    displayName: "Serial Port",
     stateConfig: {
       port: {
         type: "port",

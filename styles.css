@@ -74,12 +74,17 @@ MODAL
   color: var(--base1);
   border-radius: 6px 6px 0 0;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 6px;
+}
+
+.examples .modal-title {
+  justify-content: space-between;
 }
 
 .modal-title i {
   line-height: 0;
+  cursor: pointer;
 }
 
 .modal {
