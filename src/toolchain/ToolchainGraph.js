@@ -1,7 +1,12 @@
 export class ToolchainGraph {
-  constructor(tools = {}, pipes = {}) {
+  constructor(tools = {}, pipes = {}, title = "toolchain") {
     this.tools = tools;
     this.pipes = pipes;
+    this.title = title;
+  }
+
+  setTitle(title) {
+    return new ToolchainGraph({ ...this.tools }, { ...this.pipes }, title);
   }
 
   toJSON() {
@@ -17,6 +22,7 @@ export class ToolchainGraph {
     return {
       tools,
       pipes: this.pipes,
+      title: this.title,
     };
   }
 
@@ -39,7 +45,11 @@ export class ToolchainGraph {
   }
 
   addTool(toolID, tool) {
-    return new ToolchainGraph({ ...this.tools, [toolID]: tool }, this.pipes);
+    return new ToolchainGraph(
+      { ...this.tools, [toolID]: tool },
+      this.pipes,
+      this.title
+    );
   }
 
   deleteTool(toolID) {
@@ -55,7 +65,7 @@ export class ToolchainGraph {
 
     const { [toolID]: old, ...newTools } = this.tools;
 
-    return new ToolchainGraph(newTools, newPipes);
+    return new ToolchainGraph(newTools, newPipes, this.title);
   }
 
   addPipe(pipeID, start, end) {
@@ -72,20 +82,22 @@ export class ToolchainGraph {
 
       return new ToolchainGraph(
         { ...this.tools },
-        { ...remainingPipes, [pipeID]: { start, end } }
+        { ...remainingPipes, [pipeID]: { start, end } },
+        this.title
       );
     }
 
     return new ToolchainGraph(
       { ...this.tools },
-      { ...this.pipes, [pipeID]: { start, end } }
+      { ...this.pipes, [pipeID]: { start, end } },
+      this.title
     );
   }
 
   deletePipe(pipeID) {
     const { [pipeID]: _, ...remainingPipes } = this.pipes;
 
-    return new ToolchainGraph({ ...this.tools }, remainingPipes);
+    return new ToolchainGraph({ ...this.tools }, remainingPipes, this.title);
   }
 
   connectedInputs(toolID, portID) {

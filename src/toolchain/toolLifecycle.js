@@ -43,7 +43,7 @@ export function addTool(path, toolConfig, startState, id) {
 
   if (startState) {
     Object.entries(startState).forEach(([key, value]) => {
-      console.log(key, value);
+      // console.log(key, value);
       tool.stateConfig[key].value = value;
       if (value) {
       }

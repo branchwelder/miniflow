@@ -28,9 +28,13 @@
   --text-inactive: var(--base8);
   --disabled: var(--base8);
 
-  --accent-h: 316;
-  --accent-s: 29%;
-  --accent-l: 64%;
+  --accent-h: 326;
+  --accent-s: 59%;
+  --accent-l: 74%;
+  --background: #44475a;
+  --background-accent: #353745;
+  --taskbar: #282a36;
+  --tool-frame: #21222d;
 
   --accent: hsla(var(--accent-h), var(--accent-s), var(--accent-l));
 }
@@ -141,7 +145,7 @@ SITE
 **********************/
 
 #taskbar {
-  background-color: var(--base1);
+  background-color: var(--taskbar);
   color: var(--text-inactive);
 
   padding: 0.2em;
@@ -150,6 +154,27 @@ SITE
   align-items: center;
   justify-content: space-between;
   z-index: 10;
+  font-size: larger;
+}
+
+.site-title {
+  color: var(--text-highlight);
+  font-size: larger;
+}
+
+#title-field {
+  color: var(--text-inactive);
+}
+
+.edit-name {
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.edit-name:hover {
+  background-color: var(--pink);
+  cursor: pointer;
+  color: var(--tool-frame);
 }
 
 .taskbar-buttons {
@@ -160,14 +185,16 @@ SITE
   border: none;
   background-color: transparent;
   color: inherit;
-  height: 1.4em;
-  width: 1.4em;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
   padding: 0;
-  font-size: inherit;
+  font-size: larger;
+}
+
+.taskbar-btn i {
+  padding: 4px;
 }
 
 .taskbar-btn:hover {
@@ -183,7 +210,7 @@ SITE
 
 #workspace {
   flex: 1;
-  background-color: var(--base3);
+  background-color: var(--background);
   position: relative;
 }
 
@@ -205,7 +232,7 @@ SITE
   background-image: radial-gradient(
     circle,
     var(--text),
-    var(--base3) var(--dot-size)
+    var(--background) var(--dot-size)
   );
 }
 
@@ -344,7 +371,7 @@ TOOL UI
   border-radius: 9px;
   box-shadow: 0px 0px 0px 1px var(--base1);
   position: absolute;
-  background-color: var(--base2);
+  background-color: var(--tool-frame);
   padding-bottom: 4px;
   max-width: 800px;
 }
@@ -391,7 +418,7 @@ TOOL UI
   display: none;
   position: absolute;
   user-select: none;
-  background-color: var(--base2);
+  background-color: var(--tool-frame);
   color: var(--text-light);
   font-size: small;
   flex-direction: column;

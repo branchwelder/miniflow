@@ -127,7 +127,6 @@ export default function commandSet() {
       const { width, height } = models[this.state.model];
 
       const scale = preview.width / width;
-      console.log(scale);
 
       let pctx = preview.getContext("2d");
       let hctx = history.getContext("2d");

@@ -58,3 +58,24 @@ export function queryPortElement({ toolID, portID }, side) {
     `[data-toolid="${toolID}"] [data-portside=${side}][data-portid="${portID}"]`
   );
 }
+
+export function blurTargetOnEnter(e) {
+  if (e.code === "Enter") {
+    e.preventDefault();
+    e.target.blur();
+  }
+}
+
+export function selectElementContents(element) {
+  let range = document.createRange();
+  range.selectNodeContents(element);
+  let sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+export function checkCharacterCount(element, max, e) {
+  if (element.textContent.length > max) {
+    e.preventDefault();
+  }
+}

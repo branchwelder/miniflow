@@ -5,10 +5,17 @@ import {
   newToolchain,
 } from "../toolchain/document";
 import { GLOBAL_STATE, dispatch, undo } from "../state";
+import { startEditingTitle } from "../events/taskbarEvents";
 
 export function taskbar() {
   return html` <div id="taskbar">
-    <span>toolchains</span>
+    <span class="site-title">toolchains</span>
+
+    <span id="toolchain-title" @pointerdown=${(e) => startEditingTitle(e)}>
+      <span id="title-field">${GLOBAL_STATE.toolchain.title}</span>
+      <i class="edit-name fa-solid fa-pen-to-square"></i>
+    </span>
+
     <div class="taskbar-buttons">
       <button class="taskbar-btn" @click=${() => undo()}>
         <i class="fa-solid fa-rotate-left"></i>

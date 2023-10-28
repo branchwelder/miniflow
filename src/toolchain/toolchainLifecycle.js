@@ -28,7 +28,11 @@ export async function loadToolchainJSON(workspaceJSON) {
   );
 
   dispatch({
-    toolchain: new ToolchainGraph(Object.fromEntries(tools), {}),
+    toolchain: new ToolchainGraph(
+      Object.fromEntries(tools),
+      {},
+      toolchain.title
+    ),
     pan,
     layout,
     scale,
