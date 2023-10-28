@@ -43,8 +43,12 @@ export function addTool(path, toolConfig, startState, id) {
 
   if (startState) {
     Object.entries(startState).forEach(([key, value]) => {
-      if (!(value && Object.keys(value).length === 0))
-        tool.stateConfig[key].value = value;
+      console.log(key, value);
+      tool.stateConfig[key].value = value;
+      if (value) {
+      }
+      // if (!(value && Object.keys(value).length === 0))
+      //   tool.stateConfig[key].value = value;
     });
   }
 

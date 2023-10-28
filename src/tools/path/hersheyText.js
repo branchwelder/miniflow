@@ -56,7 +56,7 @@ export default function hersheyText() {
     stateConfig: {
       font: {
         type: "string",
-        value: "astrology",
+        value: "futural",
         change(tool, newval) {
           tool.generate();
         },
@@ -83,12 +83,12 @@ export default function hersheyText() {
       render(
         html`<div style="display: flex; gap: 5px; padding: 5px;">
           <span>Font</span>
-          <select
-            name="font"
-            .value=${state.font}
-            @change=${(e) => (state.font = e.target.value)}>
+          <select name="font" @change=${(e) => (state.font = e.target.value)}>
             ${Object.entries(hershey).map(
-              ([key, data]) => html`<option value=${key}>${data.name}</option>`
+              ([key, data]) =>
+                html`<option ?selected=${state.font == key} value=${key}>
+                  ${data.name}
+                </option>`
             )}
           </select>
         </div>`,

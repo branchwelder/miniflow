@@ -1,6 +1,6 @@
 import { html, render as renderTemplate, nothing } from "lit-html";
 import { Path } from "../lib/path";
-const stepsMM = 40;
+const stepsMM = 40 * 2;
 
 // speed: mm/s
 // x: mm
@@ -19,6 +19,22 @@ function absoluteMove(x, y, speed) {
   stepFrequency = stepFrequency < 2 ? 2 : stepFrequency;
 
   return `HM,${stepFrequency},${AxisSteps1},${AxisSteps2}`;
+}
+
+function relativeMove(dx, dy, speed) {
+  let stepsX = Math.round(dx * stepsMM);
+  let stepsY = Math.round(dy * stepsMM);
+
+  let dist = Math.sqrt(dx * dx + dy * dy);
+  let duration = Math.round((dist / speed) * 1000);
+
+  if (duration == 0) console.log("INVALID DURATION");
+
+  // Probably a bad fix but streaming XM commands can only be sustained
+  // at 3 - 4ms duration. see https://evil-mad.github.io/EggBot/ebb.html#performance
+  duration = duration < 4 ? 4 : duration;
+
+  return `XM,${duration},${stepsX},${stepsY}`;
 }
 
 const commands = {
@@ -48,13 +64,17 @@ const controls = {
 };
 
 const models = {
-  minikit: {
+  A6: {
     width: 150,
     height: 100,
   },
+  A4: {
+    width: 279,
+    height: 215,
+  },
   A3: {
-    width: 150,
-    height: 100,
+    width: 420,
+    height: 297,
   },
 };
 
@@ -70,7 +90,10 @@ export default function commandSet() {
       historyCanvas: { type: "element" },
       model: {
         type: "string",
-        value: "minikit",
+        value: "A6",
+        change(tool) {
+          tool.sizeCanvas();
+        },
       },
       penUpSpeed: {
         type: "Number",
@@ -89,29 +112,58 @@ export default function commandSet() {
     inputConfig: {
       path: {
         type: "Path",
-        change({ state }, path) {
-          if (!path) return;
-          const canvas = state.previewCanvas;
-          let ctx = canvas.getContext("2d");
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.strokeStyle = "black";
-          path.draw(ctx);
+        change(tool) {
+          tool.drawPaths();
         },
       },
       writableStream: {
         type: "WritableStream",
       },
     },
+    drawPaths() {
+      const history = this.state.historyCanvas;
+      const preview = this.state.previewCanvas;
+
+      const { width, height } = models[this.state.model];
+
+      const scale = preview.width / width;
+      console.log(scale);
+
+      let pctx = preview.getContext("2d");
+      let hctx = history.getContext("2d");
+
+      pctx.resetTransform();
+      hctx.resetTransform();
+      pctx.scale(scale, scale);
+      hctx.scale(scale, scale);
+      pctx.clearRect(0, 0, preview.width, preview.height);
+      hctx.clearRect(0, 0, history.width, history.height);
+
+      pctx.strokeStyle = "red";
+      if (this.inputs.path) this.inputs.path.draw(pctx);
+
+      hctx.strokeStyle = "black";
+      if (this.state.history) {
+        this.state.history.forEach((hist) => hist.draw(hctx));
+      }
+    },
+    sizeCanvas() {
+      const { width, height } = models[this.state.model];
+      const aspect = height / width;
+
+      const w = this.state.previewCanvas.getBoundingClientRect().width;
+
+      this.state.previewCanvas.width = w;
+      this.state.previewCanvas.height = w * aspect;
+      this.state.historyCanvas.width = w;
+      this.state.historyCanvas.height = w * aspect;
+      this.drawPaths();
+    },
     setup({ state }) {
       state.previewCanvas = document.createElement("canvas");
-      state.previewCanvas.style.cssText = "display:block";
-      state.previewCanvas.width = 600;
-      state.previewCanvas.height = 400;
-
+      state.previewCanvas.id = "preview";
       state.historyCanvas = document.createElement("canvas");
-      state.historyCanvas.style.cssText = "display:block";
-      state.historyCanvas.width = 600;
-      state.historyCanvas.height = 400;
+      state.history = [];
     },
     async sendCommand(text) {
       await this.inputs.writableStream.write(text + "\n");
@@ -120,25 +172,22 @@ export default function commandSet() {
       this.history = new Path();
     },
     controlsView() {
-      return html`<select
-          name="model-type"
-          .value=${this.state.model}
-          @change=${(e) => (this.state.model = e.target.value)}>
-          ${Object.entries(models).map(
-            ([model, config]) => html`<option value=${model}>${model}</option>`
-          )}</select
-        >${Object.entries(controls).map(
-          ([commandName, command]) =>
-            html`<button @click=${(e) => this.sendCommand(command)}>
-              ${commandName}
-            </button>`
-        )}`;
+      return html`${Object.entries(controls).map(
+        ([commandName, command]) =>
+          html`<button
+            ?disabled=${!this.inputs.writableStream}
+            @click=${(e) => this.sendCommand(command)}>
+            ${commandName}
+          </button>`
+      )}`;
     },
     connected({ dom, state }) {
       const canvasContainer = dom.getElementById("canvas-container");
 
       canvasContainer.appendChild(state.previewCanvas);
       canvasContainer.appendChild(state.historyCanvas);
+
+      this.sizeCanvas();
     },
     plot() {
       const path = this.inputs.path;
@@ -149,29 +198,35 @@ export default function commandSet() {
 
       path.segments.forEach((segment) => {
         if (segment.length < 2) return;
-        this.sendCommand(
-          absoluteMove(segment[0][0], segment[0][1], this.state.penDownSpeed)
-        );
+        let pos = segment[0];
+        this.sendCommand(absoluteMove(pos[0], pos[1], this.state.penUpSpeed));
         this.sendCommand(commands.penDown);
-        segment.forEach(([x, y]) =>
-          this.sendCommand(absoluteMove(x, y, this.state.penUpSpeed))
-        );
+        segment.forEach(([x, y]) => {
+          this.sendCommand(
+            relativeMove(x - pos[0], y - pos[1], this.state.penDownSpeed)
+          );
+          pos = [x, y];
+        });
         this.sendCommand(commands.penUp);
       });
 
       this.sendCommand(commands.home);
+      this.state.history.push(path);
     },
-    render({ dom, inputs }) {
+    render({ dom, inputs, state }) {
       renderTemplate(
         html`<style>
             .controls {
               display: flex;
+              gap: 4px;
             }
             #container {
               display: flex;
               flex-direction: column;
               padding: 10px;
               gap: 5px;
+              resize: horizontal;
+              overflow: auto;
             }
             #canvas-container {
               background-color: white;
@@ -179,20 +234,48 @@ export default function commandSet() {
               position: relative;
             }
             #canvas-container canvas {
+              display: block;
+              width: 100%;
+              height: auto;
+            }
+
+            #preview {
               position: absolute;
               top: 0px;
               left: 0px;
             }
+            button {
+              white-space: nowrap;
+            }
           </style>
           <div id="container">
-            ${inputs.writableStream
-              ? nothing
-              : html`<div>No available machine! Preview only!</div>`}
+            <div class="controls">
+              <select
+                name="model-type"
+                .value=${this.state.model}
+                @change=${(e) => (this.state.model = e.target.value)}>
+                ${Object.entries(models).map(
+                  ([model, config]) =>
+                    html`<option value=${model}>${model}</option>`
+                )}
+              </select>
+              <button
+                @click=${() => {
+                  state.history = [];
+                  this.drawPaths();
+                }}>
+                Clear
+              </button>
+            </div>
+            <div id="canvas-container"></div>
+            <button
+              @click=${() => this.plot()}
+              ?disabled=${!inputs.writableStream}>
+              ${inputs.writableStream
+                ? "Plot it!"
+                : "Connect a machine to plot"}
+            </button>
             <div class="controls">${this.controlsView()}</div>
-            <div
-              id="canvas-container"
-              style="width: ${600}px; height: ${400}px;"></div>
-            <button @click=${() => this.plot()}>Plot</button>
           </div>`,
         dom
       );
