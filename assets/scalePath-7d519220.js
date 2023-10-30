@@ -1,0 +1,1 @@
+function h(){return{displayName:"Scale Path",scale({inputs:a,outputs:e}){if(!a.path){e.path=void 0;return}const c=a.scaleX??1,t=a.scaleY??1;e.path=a.path.scale(c,t)},inputConfig:{path:{type:"Path",change(a){a.scale(a)}},scaleX:{type:"number",change(a){a.scale(a)}},scaleY:{type:"number",change(a){a.scale(a)}}},outputConfig:{path:{type:"Path"}}}}export{h as default};

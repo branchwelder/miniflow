@@ -1,0 +1,1 @@
+import{D as t,x as i}from"./index-7bd21d40.js";function a(){return{displayName:"playAudio",inputConfig:{objectURL:{type:"objectURL"}},render({inputs:o,dom:e}){o.objectURL&&t(i`<audio controls loop src=${o.objectURL}></audio>`,e)}}}export{a as default};

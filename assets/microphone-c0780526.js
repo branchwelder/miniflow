@@ -1,4 +1,4 @@
-import{D as c,x as n}from"./index-6e2f550d.js";function a(){return{displayName:"Microphone",outputConfig:{mediaStream:{type:"MediaStream"}},stateConfig:{microphone:{type:"MediaStream",change({outputs:o},t,i){i&&i.getTracks().forEach(function(e){e.stop()}),o.mediaStream=t}}},render({state:o,outputs:t,dom:i}){c(o.microphone?n`<button
+import{D as c,x as n}from"./index-7bd21d40.js";function a(){return{displayName:"Microphone",outputConfig:{mediaStream:{type:"MediaStream"}},stateConfig:{microphone:{type:"MediaStream",change({outputs:o},t,i){i&&i.getTracks().forEach(function(e){e.stop()}),o.mediaStream=t}}},render({state:o,outputs:t,dom:i}){c(o.microphone?n`<button
               style="width: 100%;"
               @click=${()=>o.microphone=void 0}>
               Disconnect
